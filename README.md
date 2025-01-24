@@ -26,7 +26,7 @@ This is an event-driven chat application built with NATS JetStream for data pers
 │   ├── client
 │   │   └── client.go     # Client-side logic
 │   ├── service
-│   │   └── chat_server.go# Chat server logic
+│   │   └── chat-server.go# Chat server logic
 │   └── store             # Persistence logic for NATS JetStream
 ├── LICENSE               # License for the project
 ├── pkg
