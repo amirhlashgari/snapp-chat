@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option go_package = "github.com/amirhlashgari/snapp-chat/proto";
+
+message User {
+  string id = 1;
+  string username = 2;
+  string status = 3;
+  int64 last_seen = 4;
+}
+
+message ChatRoom {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  repeated string members = 4;
+  int64 created_at = 5;
+}
+
+message Message {
+  string id = 1;
+  string room_id = 2;
+  string user_id = 3;
+  string content = 4;
+  int64 timestamp = 5;
+  string username = 6;
+}
+
+message Event {
+  enum Type {
+    UNKNOWN = 0;
+    MESSAGE_SENT = 1;
+    USER_JOINED = 2;
+    USER_LEFT = 3;
+    ROOM_CREATED = 4;
+    ROOM_DELETED = 5;
+  }
+  
+  Type type = 1;
+  oneof payload {
+    Message message = 2;
+    User user = 3;
+    ChatRoom room = 4;
+  }
+  int64 timestamp = 5;
+}
+
+service ChatService {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
+  rpc JoinRoom(JoinRoomRequest) returns (JoinRoomResponse);
+  rpc LeaveRoom(LeaveRoomRequest) returns (LeaveRoomResponse);
+}
+
+message ListUsersRequest {
+  string filter = 1;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+message ListRoomsRequest {
+  string filter = 1;
+}
+
+message ListRoomsResponse {
+  repeated ChatRoom rooms = 1;
+}
+
+message JoinRoomRequest {
+  string room_id = 1;
+  string user_id = 2;
+}
+
+message JoinRoomResponse {
+  bool success = 1;
+  string error = 2;
+  ChatRoom room = 3;
+}
+
+message LeaveRoomRequest {
+  string room_id = 1;
+  string user_id = 2;
+}
+
+message LeaveRoomResponse {
+  bool success = 1;
+  string error = 2;
+}
