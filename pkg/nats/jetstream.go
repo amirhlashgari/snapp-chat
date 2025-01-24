@@ -123,7 +123,8 @@ func (s *JetStreamStore) SaveRoom(room *pb.ChatRoom) error {
 		return err
 	}
 
-	_, err = s.js.Publish(fmt.Sprintf("chat.rooms.%s", room.Id), data)
+	msgID := room.Id
+	_, err = s.js.Publish(fmt.Sprintf("chat.rooms.%s", room.Id), data, nats.MsgId(msgID))
 	return err
 }
 
